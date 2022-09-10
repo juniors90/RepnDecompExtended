@@ -1,5 +1,12 @@
 # The GAP package 
 
+[![Build status](https://github.com/juniors90/RepnDecompExtended/actions/workflows/CI.yml/badge.svg)](https://github.com/juniors90/RepnDecompExtended/actions)
+[![GitHub issues](https://img.shields.io/github/issues/juniors90/RepnDecompExtended)](https://github.com/juniors90/RepnDecompExtended/issues)
+[![GitHub forks](https://img.shields.io/github/forks/juniors90/RepnDecompExtended)](https://github.com/juniors90/RepnDecompExtended/network)
+[![GitHub stars](https://img.shields.io/github/stars/juniors90/RepnDecompExtended)](https://github.com/juniors90/RepnDecompExtended/stargazers)
+[![GitHub contributors](https://img.shields.io/github/contributors/juniors90/RepnDecompExtended?color=green)](https://github.com/juniors90/RepnDecompExtended/graphs/contributors)
+
+
 ```
 LoadPackage("RepnDecompExtended", "0", false); # Cargamos el paquete
 G := SymmetricGroup( 3 ); # Definimos el grupo simétrico S3
@@ -23,10 +30,7 @@ irred_decomp_triv3_sum_sgn3_sum_std3 := IrreducibleDecomposition(triv3_sum_sgn3_
 std3_tensor_std3_diagonal_rep=triv3_sum_sgn3_sum_std3;
 ```
 
-
-
-
-
+```
 LoadPackage("RepnDecompExtended", "0", false);
 G := SymmetricGroup( 3 );;
 irreps := IrreducibleRepsOfGroup(G);;
@@ -40,7 +44,7 @@ IrreducibleDecomposition(std_tensor_std);;
 std_tensor_std_diag_rep := DiagonalRep(std_tensor_std);;
 IrreducibleDecomposition(std_tensor_std_diag_rep);;
 std_tensor_std_diag_rep = triv_sum_sgn_sum_std;
-
+```
 
 ## Contact
 

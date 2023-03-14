@@ -67,7 +67,7 @@ InstallGlobalFunction( TensorProductReps, function( rep1, rep2 )
                 irreps            := rep1.irreps, # new feature
                 genimages         := mgens,
                 isRepresentation  := true,
-                isIrreps          := newrho in rho.irreps,
+                isIrreps          := newrho in rep1.irreps,
                 dimension         := Length(mgens[1]),
                 operations        := GroupRepOps,
     );
@@ -80,8 +80,8 @@ InstallGlobalFunction( IrreducibleRepsOfGroup, function(G)
     if not IsGroup(G) then
         Error("for usage, see ?IrreducibleRepsOfGroup");
     fi;
-    irreps := IrreducibleRepresentations( G );
-    gens := GeneratorsOfGroup(G);
+    irreps := IrreducibleRepresentations( G ); #
+    gens := GeneratorsOfGroup( G );
     L:=[];
     for i in [1..Length( irreps )] do
         rho := GroupHomomorphismByImages( G, Group( List( gens, x -> x^irreps[i] ) ) );

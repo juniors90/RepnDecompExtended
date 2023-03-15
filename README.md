@@ -1,6 +1,7 @@
 # The GAP package 
 
 [![Build status](https://github.com/juniors90/RepnDecompExtended/actions/workflows/CI.yml/badge.svg)](https://github.com/juniors90/RepnDecompExtended/actions)
+[![codecov](https://codecov.io/github/juniors90/RepnDecompExtended/branch/main/graph/badge.svg?token=anQ5vNi9MQ)](https://codecov.io/github/juniors90/RepnDecompExtended)
 [![GitHub issues](https://img.shields.io/github/issues/juniors90/RepnDecompExtended)](https://github.com/juniors90/RepnDecompExtended/issues)
 [![GitHub forks](https://img.shields.io/github/forks/juniors90/RepnDecompExtended)](https://github.com/juniors90/RepnDecompExtended/network)
 [![GitHub stars](https://img.shields.io/github/stars/juniors90/RepnDecompExtended)](https://github.com/juniors90/RepnDecompExtended/stargazers)

@@ -8,43 +8,83 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/juniors90/RepnDecompExtended?color=green)](https://github.com/juniors90/RepnDecompExtended/graphs/contributors)
 
 
-```
-LoadPackage("RepnDecompExtended", "0", false); # Cargamos el paquete
-G := SymmetricGroup( 3 ); # Definimos el grupo simétrico S3
-# Calculamos las representaciones irrreducibles para el
-# grupo simétrico
-irreps := IrreducibleRepsOfGroup(G);
-# Definimos las variables triv3, sgn3 y std3 que contenga a la 
-# representación trivial, signo y estandar del grupo simétrico S3
-triv3 := irreps[1]; sgn3 := irreps[2]; std3:=irreps[3];
-# Calculamos una la representación de S3 dada por el producto
-# tensorial de la representación estandar por la representación estandar
-std3_tensor_std3 := TensorProductReps(std3, std3);
-# Calculamos base, representación diagonal, decomposition y base
-# centralizadora de la representación de S3 dada por el producto
-# tensorial de la representación estandar por la representación estandar.
-irred_decomp := REPN_ComputeUsingSerre(std3_tensor_std3);
-# # Guardamo en una variable la representación diagonal
-std3_tensor_std3_diagonal_rep := irred_decomp.diagonal_rep;
-triv3_sum_sgn3_sum_std3 := DirectSumOfRepresentations([triv3, sgn3, std3]);
-irred_decomp_triv3_sum_sgn3_sum_std3 := IrreducibleDecomposition(triv3_sum_sgn3_sum_std3);
-std3_tensor_std3_diagonal_rep=triv3_sum_sgn3_sum_std3;
-```
-
-```
-LoadPackage("RepnDecompExtended", "0", false);
-G := SymmetricGroup( 3 );;
-irreps := IrreducibleRepsOfGroup(G);;
-triv_sum_sgn_sum_std := DirectSumOfRepresentations(irreps);;
-IrreducibleDecomposition(triv_sum_sgn_sum_std);;
-triv := irreps[1];;
-sgn := irreps[2];;
-std := irreps[3];;
-std_tensor_std := TensorProductReps(std, std);;
-IrreducibleDecomposition(std_tensor_std);;
-std_tensor_std_diag_rep := DiagonalRep(std_tensor_std);;
-IrreducibleDecomposition(std_tensor_std_diag_rep);;
-std_tensor_std_diag_rep = triv_sum_sgn_sum_std;
+```gap
+gap> LoadPackage("RepnDecompExtended", "0", false);
+true
+gap> G := SymmetricGroup( 3 );
+Sym( [ 1 .. 3 ] )
+gap> m1:=[ [ E(3), 0 ], [ 0, E(3)^2 ] ];;
+gap> m2:=[ [ 0,    E(3)^2 ], [ E(3), 0] ];;
+gap> m := [ m1, m2 ];;
+gap> rep := Rep(G,m);
+rec( dimension := 2, field := CF(3), generatorsofgroup := [ (1,2,3), (1,2) ], 
+  genimages := [ [ [ E(3), 0 ], [ 0, E(3)^2 ] ], [ [ 0, E(3)^2 ], [ E(3), 0 ] ] ], 
+  group := Sym( [ 1 .. 3 ] ), 
+  irreps := [ [ (1,2,3), (1,2) ] -> [ [ [ 1 ] ], [ [ 1 ] ] ], 
+      [ (1,2,3), (1,2) ] -> [ [ [ 1 ] ], [ [ -1 ] ] ], 
+      [ (1,2,3), (1,2) ] -> [ [ [ E(3), 0 ], [ 0, E(3)^2 ] ], [ [ 0, E(3)^2 ], [ E(3), 0 ] ] ] 
+     ], isIrreps := true, isRepresentation := true, operations := rec(  ), 
+  rho := [ (1,2,3), (1,2) ] -> [ [ [ E(3), 0 ], [ 0, E(3)^2 ] ], 
+      [ [ 0, E(3)^2 ], [ E(3), 0 ] ] ] )
+gap> rep.rho;
+[ (1,2,3), (1,2) ] -> [ [ [ E(3), 0 ], [ 0, E(3)^2 ] ], [ [ 0, E(3)^2 ], [ E(3), 0 ] ] ]
+gap> rep.irreps;
+[ [ (1,2,3), (1,2) ] -> [ [ [ 1 ] ], [ [ 1 ] ] ], [ (1,2,3), (1,2) ] -> [ [ [ 1 ] ], [ [ -1 ] ] ], 
+  [ (1,2,3), (1,2) ] -> [ [ [ E(3), 0 ], [ 0, E(3)^2 ] ], [ [ 0, E(3)^2 ], [ E(3), 0 ] ] ] ]
+gap> rep.irreps[1];
+[ (1,2,3), (1,2) ] -> [ [ [ 1 ] ], [ [ 1 ] ] ]
+gap> rep.irreps[2];
+[ (1,2,3), (1,2) ] -> [ [ [ 1 ] ], [ [ -1 ] ] ]
+gap> rep.irreps[3];
+[ (1,2,3), (1,2) ] -> [ [ [ E(3), 0 ], [ 0, E(3)^2 ] ], [ [ 0, E(3)^2 ], [ E(3), 0 ] ] ]
+gap> triv_sum_sgn_sum_std := DirectSumOfRepresentations(rep.irreps);;
+gap> triv_sum_sgn_sum_std;
+[ (1,2,3), (1,2) ] -> [ [ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, E(3), 0 ], [ 0, 0, 0, E(3)^2 ] ], 
+  [ [ 1, 0, 0, 0 ], [ 0, -1, 0, 0 ], [ 0, 0, 0, E(3)^2 ], [ 0, 0, E(3), 0 ] ] ]
+gap> Print( IrreducibleDecomposition(triv_sum_sgn_sum_std) );
+[ rec(
+      basis := [ [ 1, 0, 0, 0 ] ] ), rec(
+      basis := [ [ 0, 1, 0, 0 ] ] ), rec(
+      basis := [ [ 0, 0, 1, 0 ], [ 0, 0, 0, 1 ] ] ) ]
+gap> std_tensor_std := TensorProductReps(rep, rep);;
+gap> std_tensor_std;
+rec( dimension := 4, generatorsofgroup := [ (1,2,3), (1,2) ], 
+  genimages := [ [ [ E(3)^2, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ], [ 0, 0, 0, E(3) ] ], 
+      [ [ 0, 0, 0, E(3) ], [ 0, 0, 1, 0 ], [ 0, 1, 0, 0 ], [ E(3)^2, 0, 0, 0 ] ] ], group := Sym( [ 1 .. 3 ] ), 
+  irreps := [ [ (1,2,3), (1,2) ] -> [ [ [ 1 ] ], [ [ 1 ] ] ], [ (1,2,3), (1,2) ] -> [ [ [ 1 ] ], [ [ -1 ] ] ], 
+      [ (1,2,3), (1,2) ] -> [ [ [ E(3), 0 ], [ 0, E(3)^2 ] ], [ [ 0, E(3)^2 ], [ E(3), 0 ] ] ] ], isIrreps := false, 
+  isRepresentation := true, operations := rec(  ), 
+  rho := [ (1,2,3), (1,2) ] -> [ [ [ E(3)^2, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ], [ 0, 0, 0, E(3) ] ], 
+      [ [ 0, 0, 0, E(3) ], [ 0, 0, 1, 0 ], [ 0, 1, 0, 0 ], [ E(3)^2, 0, 0, 0 ] ] ] )
+gap>  Print( IrreducibleDecomposition(std_tensor_std.rho) );
+[ rec(
+      basis := [ [ 0, 1, 1, 0 ] ] ), rec(
+      basis := [ [ 0, 1, -1, 0 ] ] ), rec(
+      basis := [ [ 0, 0, 0, 1 ], [ 1, 0, 0, 0 ] ] ) ]
+gap> std_tensor_std_diag_rep :=  DiagonalRep(std_tensor_std);;
+gap> std_tensor_std_diag_rep;
+rec( basis := [ [ 0, 1, 1, 0 ], [ 0, 1, -1, 0 ], [ 0, 0, 0, 1 ], [ 1, 0, 0, 0 ] ], 
+  centralizer_basis := [ [ [ [ 1 ] ], [ [ 0 ] ], [ [ 0, 0 ], [ 0, 0 ] ] ], 
+      [ [ [ 0 ] ], [ [ 1 ] ], [ [ 0, 0 ], [ 0, 0 ] ] ], [ [ [ 0 ] ], [ [ 0 ] ], [ [ 1, 0 ], [ 0, 1 ] ] ] ], 
+  decomposition := [ [ rec( basis := [ [ 0, 1, 1, 0 ] ] ) ], [ rec( basis := [ [ 0, 1, -1, 0 ] ] ) ], 
+      [ rec( basis := [ [ 0, 0, 0, 1 ], [ 1, 0, 0, 0 ] ] ) ] ], diagonal_rep := [ (1,2,3), (1,2) ] -> 
+    [ [ [ 1, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, E(3), 0 ], [ 0, 0, 0, E(3)^2 ] ], 
+      [ [ 1, 0, 0, 0 ], [ 0, -1, 0, 0 ], [ 0, 0, 0, E(3)^2 ], [ 0, 0, E(3), 0 ] ] ], dimension := 4, 
+  generatorsofgroup := [ (1,2,3), (1,2) ], 
+  genimages := [ [ [ E(3)^2, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ], [ 0, 0, 0, E(3) ] ], 
+      [ [ 0, 0, 0, E(3) ], [ 0, 0, 1, 0 ], [ 0, 1, 0, 0 ], [ E(3)^2, 0, 0, 0 ] ] ], group := Sym( [ 1 .. 3 ] ), 
+  irreps := [ [ (1,2,3), (1,2) ] -> [ [ [ 1 ] ], [ [ 1 ] ] ], [ (1,2,3), (1,2) ] -> [ [ [ 1 ] ], [ [ -1 ] ] ], 
+      [ (1,2,3), (1,2) ] -> [ [ [ E(3), 0 ], [ 0, E(3)^2 ] ], [ [ 0, E(3)^2 ], [ E(3), 0 ] ] ] ], isIrreps := false, 
+  isRepresentation := true, operations := rec(  ), 
+  rho := [ (1,2,3), (1,2) ] -> [ [ [ E(3)^2, 0, 0, 0 ], [ 0, 1, 0, 0 ], [ 0, 0, 1, 0 ], [ 0, 0, 0, E(3) ] ], 
+      [ [ 0, 0, 0, E(3) ], [ 0, 0, 1, 0 ], [ 0, 1, 0, 0 ], [ E(3)^2, 0, 0, 0 ] ] ] )
+gap> Print( IrreducibleDecomposition( std_tensor_std_diag_rep.diagonal_rep ) );
+[ rec(
+      basis := [ [ 1, 0, 0, 0 ] ] ), rec(
+      basis := [ [ 0, 1, 0, 0 ] ] ), rec(
+      basis := [ [ 0, 0, 1, 0 ], [ 0, 0, 0, 1 ] ] ) ]
+gap> std_tensor_std_diag_rep.diagonal_rep = triv_sum_sgn_sum_std;
+true
 ```
 
 ## Contact
